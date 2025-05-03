@@ -331,11 +331,11 @@ public class SpaceMvcPayoutHandler : BitcoinPayoutHandler
 
     #endregion // IPayoutHandler
 
-    private async Task<DaemonResponses.Block[]> GetBlockInfoAsync(CancellationToken ct, Block[] blocks)
+    private async Task<Block[]> GetBlockInfoAsync(CancellationToken ct, Block[] blocks)
     {
         var pageSize = 100;
         var pageCount = (int) Math.Ceiling(blocks.Length / (double) pageSize);
-        var result = new List<DaemonResponses.Block>();
+        var result = new List<Block>();
 
         for(var i = 0; i < pageCount; i++)
         {
@@ -361,7 +361,7 @@ public class SpaceMvcPayoutHandler : BitcoinPayoutHandler
 
                 if(result.Error == null)
                 {
-                    var blockInfo = result.Response.ToObject<DaemonResponses.Block>();
+                    var blockInfo = result.Response.ToObject<Block>();
 
                     // coinbase transaction ids might be in the following format:
                     // "b4a216ed0d4e959510dfa676434e8f6ce8e0af4b7b7d9b52b1e713d7ba665d19-0"
