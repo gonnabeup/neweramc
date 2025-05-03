@@ -8,6 +8,7 @@ using Miningcore.JsonRpc;
 using Miningcore.Messaging;
 using Miningcore.Mining;
 using Miningcore.Notifications.Messages;
+using Miningcore.Rpc;
 using Miningcore.Time;
 using Miningcore.Util;
 using NBitcoin;
@@ -16,6 +17,12 @@ using Autofac;
 using static Miningcore.Util.ActionUtils;
 
 namespace Miningcore.Blockchain.SpaceMvc;
+
+public class SpaceMvcTemplate : BitcoinTemplate
+{
+    public override string Symbol => "SPACE";
+    public override string Algorithm => "SHA256";
+}
 
 public class SpaceMvcJobManager : BitcoinJobManagerBase<SpaceMvcJob>
 {

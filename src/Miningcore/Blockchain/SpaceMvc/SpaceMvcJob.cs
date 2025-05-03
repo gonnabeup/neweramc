@@ -1,41 +1,17 @@
 using Miningcore.Blockchain.Bitcoin;
-using Miningcore.Blockchain.SpaceMvc.Configuration;
 using Miningcore.Configuration;
-using Miningcore.Contracts;
 using Miningcore.Crypto;
-using Miningcore.Crypto.Hashing.Algorithms;
 using Miningcore.Extensions;
-using Miningcore.Mining;
-using Miningcore.Native;
-using Miningcore.Time;
-using Miningcore.Util;
 using NBitcoin;
 using NBitcoin.DataEncoders;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Numerics;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Contract = Miningcore.Contracts.Contract;
-using Transaction = NBitcoin.Transaction;
 
 namespace Miningcore.Blockchain.SpaceMvc;
 
 public class SpaceMvcJob : BitcoinJob
 {
-    protected uint txVersion = 1;
-    protected uint txInputCount = 1;
-    protected uint256 sha256Empty = uint256.Zero;
-    protected uint txInIndex = 0;
-    protected uint txInSequence = 0;
-    protected uint txLockTime = 0;
-
     protected override Transaction CreateOutputTransaction()
     {
         rewardToPool = new Money(BlockTemplate.CoinbaseValue, MoneyUnit.Satoshi);
