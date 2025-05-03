@@ -67,17 +67,17 @@ public class SpaceMvcPayoutHandler : BitcoinPayoutHandler
         this.ctx = ctx;
     }
 
-    protected readonly IComponentContext ctx;
-    protected RpcClient rpcClient;
-    protected SpaceMvcPoolConfigExtra extraPoolConfig;
-    protected BitcoinDaemonEndpointConfigExtra extraPoolEndpointConfig;
-    protected SpaceMvcPoolPaymentProcessingConfigExtra extraPoolPaymentProcessingConfig;
+    protected new readonly IComponentContext ctx;
+    protected new RpcClient rpcClient;
+    protected new SpaceMvcPoolConfigExtra extraPoolConfig;
+    protected new BitcoinDaemonEndpointConfigExtra extraPoolEndpointConfig;
+    protected new SpaceMvcPoolPaymentProcessingConfigExtra extraPoolPaymentProcessingConfig;
 
     protected override string LogCategory => "Space MVC Payout Handler";
 
     #region IPayoutHandler
 
-    public virtual Task ConfigureAsync(ClusterConfig cc, PoolConfig pc, CancellationToken ct)
+    public override Task ConfigureAsync(ClusterConfig cc, PoolConfig pc, CancellationToken ct)
     {
         Contract.RequiresNonNull(pc);
 
@@ -96,7 +96,7 @@ public class SpaceMvcPayoutHandler : BitcoinPayoutHandler
         return Task.CompletedTask;
     }
 
-    public virtual async Task<Block[]> ClassifyBlocksAsync(IMiningPool pool, Block[] blocks, CancellationToken ct)
+    public override async Task<Block[]> ClassifyBlocksAsync(IMiningPool pool, Block[] blocks, CancellationToken ct)
     {
         Contract.RequiresNonNull(poolConfig);
         Contract.RequiresNonNull(blocks);
@@ -155,7 +155,7 @@ public class SpaceMvcPayoutHandler : BitcoinPayoutHandler
         return result.ToArray();
     }
 
-    public virtual async Task PayoutAsync(IMiningPool pool, Balance[] balances, CancellationToken ct)
+    public override async Task PayoutAsync(IMiningPool pool, Balance[] balances, CancellationToken ct)
     {
         Contract.RequiresNonNull(balances);
 
@@ -348,7 +348,7 @@ public class SpaceMvcPayoutHandler : BitcoinPayoutHandler
         }
     }
 
-    public double AdjustBlockEffort(double effort)
+    public override double AdjustBlockEffort(double effort)
     {
         return effort;
     }
