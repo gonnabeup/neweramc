@@ -19,7 +19,6 @@ using Block = Miningcore.Persistence.Model.Block;
 using Contract = Miningcore.Contracts.Contract;
 using static Miningcore.Util.ActionUtils;
 using DaemonResponses = Miningcore.Blockchain.Bitcoin.DaemonResponses;
-using BlockInfo = Miningcore.Blockchain.Bitcoin.DaemonResponses.BlockInfo;
 
 namespace Miningcore.Blockchain.SpaceMvc;
 
