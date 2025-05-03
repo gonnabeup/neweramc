@@ -2,14 +2,36 @@
   "logging": {
     "level": "info",
     "enableConsoleLog": true,
-    "enableConsoleColors": true
+    "enableConsoleColors": true,
+    "logFile": "",
+    "logBaseDirectory": "",
+    "perPoolLogFile": false
+  },
+  "banning": {
+    "banOnJunkReceive": true,
+    "banOnInvalidShares": false
+  },
+  "notifications": {
+    "enabled": true,
+    "pushover": {
+      "enabled": true,
+      "apiToken": "ajoijzgjf5gshxfid4tisqdnt7yjkj",
+      "userKey": "u3dhhbuh94gqmjd44eqv1dehomcpaj",
+      "priority": 0
+    },
+    "email": {
+      "enabled": false
+    },
+    "admin": {
+      "enabled": false
+    }
   },
   "persistence": {
     "postgres": {
       "host": "127.0.0.1",
       "port": 5432,
       "user": "miningcore",
-      "password": "password",
+      "password": "spassword",
       "database": "miningcore"
     }
   },
@@ -79,14 +101,6 @@
         "hasBrokenSendMany": false,
         "coinbaseTxComment": "Miningcore",
         "maxBlockSize": 4000000000
-      },
-      "notifications": {
-        "enabled": true,
-        "pushover": {
-          "enabled": true,
-          "user": "u3dhhbuh94gqmjd44eqv1dehomcpaj",
-          "token": "ajoijzgjf5gshxfid4tisqdnt7yjkj"
-        }
       }
     }
   ]

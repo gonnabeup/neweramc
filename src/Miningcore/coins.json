@@ -332,21 +332,28 @@
         "discord": "https://discord.gg/mvcofficial",
         "coinbaseHasher": {
             "hash": "sha256d"
-        },
-    "headerHasher": {
-        "hash": "sha256d"
-    },
-    "blockHasher": {
-        "hash": "reverse",
-        "args": [
-            {
-                "hash": "sha256d"
-            }
+            },
+        "headerHasher": {
+            "hash": "sha256d"
+            },
+        "blockHasher": {
+            "hash": "reverse",
+            "args": [
+                {
+                    "hash": "sha256d"
+                }
             ]
             },
         "explorerBlockLink": "https://mvcscan.com/block/$hash$",
         "explorerTxLink": "https://mvcscan.com/tx/{0}",
-        "explorerAccountLink": "https://mvcscan.com/address/{0}"
+        "explorerAccountLink": "https://mvcscan.com/address/{0}",
+        "coinbaseTxVersion": 1,
+        "coinbaseTxComment": "Miningcore",
+        "coinbaseMinConfimations": 102,
+        "shareMultiplier": 1,
+        "hashrateMultiplier": 1,
+        "initialReward": 25.0,
+        "subsidyHalvingInterval": 131250
     },
     "bitcoin-cash": {
         "name": "Bitcoin Cash",
