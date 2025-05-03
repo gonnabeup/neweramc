@@ -18,12 +18,6 @@ using static Miningcore.Util.ActionUtils;
 
 namespace Miningcore.Blockchain.SpaceMvc;
 
-public class SpaceMvcTemplate : BitcoinTemplate
-{
-    public override string Symbol => "SPACE";
-    public override string Algorithm => "SHA256";
-}
-
 public class SpaceMvcJobManager : BitcoinJobManagerBase<SpaceMvcJob>
 {
     public SpaceMvcJobManager(
