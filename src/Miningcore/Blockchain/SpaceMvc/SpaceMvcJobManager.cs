@@ -88,7 +88,7 @@ public class SpaceMvcJobManager : BitcoinJobManagerBase<SpaceMvcJob>
                         blockTemplate.Height > job.BlockTemplate?.Height));
 
             if(isNew)
-                messageBus.SendMessage(new BlockTemplateNotification(poolConfig.Id, blockTemplate.Height, poolConfig.Template));
+                messageBus.SendMessage(new BlockHeightNotification(poolConfig.Id, blockTemplate.Height));
 
             if(isNew || forceUpdate)
             {

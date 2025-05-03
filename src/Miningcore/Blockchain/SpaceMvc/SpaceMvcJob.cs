@@ -12,6 +12,13 @@ namespace Miningcore.Blockchain.SpaceMvc;
 
 public class SpaceMvcJob : BitcoinJob
 {
+    protected new uint txVersion = 1;
+    protected new uint txInputCount = 1;
+    protected new uint256 sha256Empty = uint256.Zero;
+    protected new uint txInIndex = 0;
+    protected new uint txInSequence = 0;
+    protected new uint txLockTime = 0;
+
     protected override Transaction CreateOutputTransaction()
     {
         rewardToPool = new Money(BlockTemplate.CoinbaseValue, MoneyUnit.Satoshi);
