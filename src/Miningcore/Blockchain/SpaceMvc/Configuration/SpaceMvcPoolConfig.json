@@ -45,5 +45,13 @@
     "hasBrokenSendMany": false,
     "coinbaseTxComment": "Miningcore",
     "maxBlockSize": 4000000000
+  },
+  "notifications": {
+    "enabled": true,
+    "pushover": {
+      "enabled": true,
+      "user": "u3dhhbuh94gqmjd44eqv1dehomcpaj",
+      "token": "ajoijzgjf5gshxfid4tisqdnt7yjkj"
+    }
   }
 } 
