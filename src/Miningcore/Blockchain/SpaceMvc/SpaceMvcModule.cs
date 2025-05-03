@@ -3,17 +3,13 @@ using Miningcore.Blockchain;
 using Miningcore.Blockchain.Bitcoin;
 using Miningcore.Mining;
 using Miningcore.Payments;
-using Autofac;
 using AutoMapper;
-using Miningcore.Blockchain.Bitcoin;
 using Miningcore.Blockchain.Bitcoin.Configuration;
 using Miningcore.Blockchain.Bitcoin.DaemonResponses;
 using Miningcore.Blockchain.SpaceMvc.Configuration;
 using Miningcore.Configuration;
 using Miningcore.Extensions;
 using Miningcore.Messaging;
-using Miningcore.Mining;
-using Miningcore.Payments;
 using Miningcore.Persistence;
 using Miningcore.Persistence.Model;
 using Miningcore.Persistence.Repositories;
@@ -32,7 +28,7 @@ public class SpaceMvcModule : Module
     protected override void Load(ContainerBuilder builder)
     {
         builder.RegisterType<SpaceMvcJobManager>()
-            .AsSelf()
+            .As<IBitcoinJobManager>()
             .SingleInstance();
 
         builder.RegisterType<SpaceMvcPayoutHandler>()
@@ -40,7 +36,7 @@ public class SpaceMvcModule : Module
             .SingleInstance();
 
         builder.RegisterType<SpaceMvcPool>()
-            .As<IPool>()
+            .As<IMiningPool>()
             .SingleInstance();
     }
 } 

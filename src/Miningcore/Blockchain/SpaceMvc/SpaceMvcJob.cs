@@ -57,11 +57,11 @@ public class SpaceMvcJob : BitcoinJob
             bs.ReadWrite(ref txLockTime);
 
             coinbaseInitial = stream.ToArray();
-            coinbaseInitialHex = coinbaseInitial.ToHexString();
+            coinbaseInitialHex = Encoders.Hex.EncodeData(coinbaseInitial);
         }
 
         // build merkle root
-        merkleBranchesHex = new string[0];
+        merkleBranchesHex = Array.Empty<string>();
         mt = new MerkleTree(merkleBranchesHex);
     }
 } 

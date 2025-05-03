@@ -15,6 +15,8 @@ using Miningcore.Persistence.Repositories;
 using Miningcore.Rpc;
 using Miningcore.Time;
 using Miningcore.Util;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Block = Miningcore.Persistence.Model.Block;
 using Contract = Miningcore.Contracts.Contract;
 using static Miningcore.Util.ActionUtils;
@@ -333,61 +335,28 @@ public class SpaceMvcPayoutHandler : BitcoinPayoutHandler
 
     private async Task<Block[]> GetBlockInfoAsync(CancellationToken ct, Block[] blocks)
     {
-        var pageSize = 100;
-        var pageCount = (int) Math.Ceiling(blocks.Length / (double) pageSize);
-        var result = new List<Block>();
+        var blockInfos = new Block[blocks.Length];
 
-        for(var i = 0; i < pageCount; i++)
+        for(var i = 0; i < blocks.Length; i++)
         {
-            // get a page full of blocks
-            var page = blocks
-                .Skip(i * pageSize)
-                .Take(pageSize)
-                .ToArray();
+            var block = blocks[i];
+            var result = await rpcClient.ExecuteAsync<JToken>(logger, BitcoinCommands.GetBlock, ct, new[] { block.TransactionConfirmationData });
 
-            // build args batch
-            var argsBatch = page.Select(block => new object[]
+            if(result.Error != null)
             {
-                block.TransactionConfirmationData
-            }).ToArray();
-
-            // execute batch
-            var results = await rpcClient.ExecuteBatchAsync(logger, ct, BitcoinCommands.GetBlock, argsBatch, null);
-
-            for(var j = 0; j < results.Length; j++)
-            {
-                var result = results[j];
-                var block = page[j];
-
-                if(result.Error == null)
-                {
-                    var blockInfo = result.Response.ToObject<Block>();
-
-                    // coinbase transaction ids might be in the following format:
-                    // "b4a216ed0d4e959510dfa676434e8f6ce8e0af4b7b7d9b52b1e713d7ba665d19-0"
-                    // we need to strip the index
-                    if(blockInfo?.Transactions?.Length > 0)
-                    {
-                        var txId = blockInfo.Transactions[0];
-                        var dashIndex = txId.IndexOf('-');
-
-                        if(dashIndex != -1)
-                            txId = txId.Substring(0, dashIndex);
-
-                        blockInfo.Transactions[0] = txId;
-                    }
-
-                    result.Add(blockInfo);
-                }
-
-                else
-                {
-                    result.Add(null);
-                }
+                logger.Error(() => $"[{LogCategory}] Error retrieving block {block.TransactionConfirmationData}: {result.Error.Message}");
+                continue;
             }
+
+            var blockInfo = result.Response;
+            blockInfos[i] = new Block
+            {
+                Height = blockInfo["height"]?.Value<int>() ?? 0,
+                Confirmations = blockInfo["confirmations"]?.Value<int>() ?? 0
+            };
         }
 
-        return result.ToArray();
+        return blockInfos;
     }
 
     private decimal GetBaseBlockReward(int height)

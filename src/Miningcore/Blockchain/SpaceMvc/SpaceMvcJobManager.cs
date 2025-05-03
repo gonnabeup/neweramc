@@ -2,6 +2,7 @@ using Miningcore.Blockchain.Bitcoin;
 using Miningcore.Blockchain.SpaceMvc.Configuration;
 using Miningcore.Configuration;
 using Miningcore.Contracts;
+using Miningcore.Crypto;
 using Miningcore.Messaging;
 using Miningcore.Mining;
 using Miningcore.Time;
@@ -41,12 +42,28 @@ public class SpaceMvcJobManager : BitcoinJobManagerBase<SpaceMvcJob>
 
     protected override async Task<(bool IsNew, bool Force)> UpdateJob(CancellationToken ct, bool forceUpdate, string via = null, string json = null)
     {
-        return await base.UpdateJob(ct, forceUpdate, via, json);
+        try
+        {
+            return await base.UpdateJob(ct, forceUpdate, via, json);
+        }
+        catch(Exception ex)
+        {
+            logger.Error(() => $"Error in UpdateJob: {ex.Message}");
+            throw;
+        }
     }
 
     protected override object GetJobParamsForStratum(bool isNew)
     {
-        return base.GetJobParamsForStratum(isNew);
+        try
+        {
+            return base.GetJobParamsForStratum(isNew);
+        }
+        catch(Exception ex)
+        {
+            logger.Error(() => $"Error in GetJobParamsForStratum: {ex.Message}");
+            throw;
+        }
     }
 
     public override void Configure(PoolConfig pc, ClusterConfig cc)
