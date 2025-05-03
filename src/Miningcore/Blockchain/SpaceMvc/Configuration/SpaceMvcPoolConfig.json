@@ -1,0 +1,49 @@
+{
+  "id": "spacemvc",
+  "enabled": true,
+  "coin": {
+    "type": "SpaceMVC",
+    "algorithm": "sha256",
+    "family": "bitcoin",
+    "coinbaseTxVersion": 1,
+    "coinbaseTxComment": "Miningcore",
+    "coinbaseMinConfimations": 102,
+    "headerHasher": "sha256",
+    "blockHasher": "sha256",
+    "coinbaseHasher": "sha256",
+    "shareMultiplier": 1,
+    "hashrateMultiplier": 1,
+    "initialReward": 25.0,
+    "subsidyHalvingInterval": 131250
+  },
+  "address": "19FAQ9YJmg6iLv6qqb6ficxQRf5JH8D3BV",
+  "daemons": [
+    {
+      "host": "127.0.0.1",
+      "port": 9882,
+      "user": "spuser",
+      "password": "spassword",
+      "zmqBlockNotifySocket": "tcp://127.0.0.1:9883"
+    }
+  ],
+  "paymentProcessing": {
+    "enabled": true,
+    "minimumPayment": 0.1,
+    "payoutScheme": "PPLNS",
+    "payoutSchemeConfig": {
+      "factor": 2.0
+    },
+    "extra": {
+      "minersPayTxFees": false,
+      "walletPassword": null
+    }
+  },
+  "extra": {
+    "addressType": "legacy",
+    "maxActiveJobs": 12,
+    "hasLegacyDaemon": false,
+    "hasBrokenSendMany": false,
+    "coinbaseTxComment": "Miningcore",
+    "maxBlockSize": 4000000000
+  }
+} 
