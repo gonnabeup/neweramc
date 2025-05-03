@@ -320,6 +320,34 @@
         "explorerTxLink": "https://www.blockchain.com/btc/tx/{0}",
         "explorerAccountLink": "https://www.blockchain.com/btc/address/{0}"
     },
+    "space": {
+        "name": "MicroVisionChain",
+        "canonicalName": "MicroVisionChain",
+        "symbol": "SPACE",
+        "family": "bitcoin",
+        "website": "https://www.microvisionchain.com/",
+        "market": "https://coinmarketcap.com/currencies/microvisionchain/",
+        "twitter": "https://twitter.com/mvcglobal",
+        "telegram": "https://t.me/mvcofficial",
+        "discord": "https://discord.gg/mvcofficial",
+        "coinbaseHasher": {
+            "hash": "sha256d"
+        },
+    "headerHasher": {
+        "hash": "sha256d"
+    },
+    "blockHasher": {
+        "hash": "reverse",
+        "args": [
+            {
+                "hash": "sha256d"
+            }
+            ]
+            },
+        "explorerBlockLink": "https://mvcscan.com/block/$hash$",
+        "explorerTxLink": "https://mvcscan.com/tx/{0}",
+        "explorerAccountLink": "https://mvcscan.com/address/{0}"
+    },
     "bitcoin-cash": {
         "name": "Bitcoin Cash",
         "canonicalName": "Bitcoin-Cash",
