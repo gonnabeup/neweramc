@@ -68,23 +68,4 @@ public class SpaceMvcJob : BitcoinJob
         merkleBranchesHex = new string[0];
         mt = new MerkleTree(merkleBranchesHex);
     }
-
-    protected override byte[] SerializeHeader(Span<byte> coinbaseHash, uint nTime, uint nonce, uint? versionMask, uint? versionBits)
-    {
-        // build merkle-root
-        var merkleRoot = mt.WithFirst(coinbaseHash.ToArray());
-
-        // serialize block header
-        var blockHeader = new BlockHeader
-        {
-            Version = (int)BlockTemplate.Version,
-            Bits = new Target(Encoders.Hex.DecodeData(BlockTemplate.Bits)),
-            HashPrevBlock = uint256.Parse(BlockTemplate.PreviousBlockhash),
-            HashMerkleRoot = new uint256(merkleRoot),
-            NTime = nTime,
-            Nonce = nonce
-        };
-
-        return blockHeader.ToBytes();
-    }
 } 
