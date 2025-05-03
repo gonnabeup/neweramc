@@ -28,7 +28,7 @@ public class SpaceMvcModule : Module
     protected override void Load(ContainerBuilder builder)
     {
         builder.RegisterType<SpaceMvcJobManager>()
-            .As<IBitcoinJobManager>()
+            .As<BitcoinJobManagerBase<SpaceMvcJob>>()
             .SingleInstance();
 
         builder.RegisterType<SpaceMvcPayoutHandler>()

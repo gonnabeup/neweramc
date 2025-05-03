@@ -351,8 +351,8 @@ public class SpaceMvcPayoutHandler : BitcoinPayoutHandler
             var blockInfo = result.Response;
             blockInfos[i] = new Block
             {
-                Height = blockInfo["height"]?.Value<int>() ?? 0,
-                Confirmations = blockInfo["confirmations"]?.Value<int>() ?? 0
+                BlockHeight = blockInfo["height"]?.Value<ulong>() ?? 0,
+                ConfirmationProgress = blockInfo["confirmations"]?.Value<int>() ?? 0
             };
         }
 

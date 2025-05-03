@@ -45,9 +45,9 @@ public class SpaceMvcJob : BitcoinJob
             // serialize (simulated) input transaction
             bs.ReadWriteAsVarInt(ref txInputCount);
             bs.ReadWrite(ref sha256Empty);
-            bs.ReadWrite(ref coinbaseIndex);
+            bs.ReadWrite(ref txInIndex);
             bs.ReadWrite(ref script);
-            bs.ReadWrite(ref coinbaseSequence);
+            bs.ReadWrite(ref txInSequence);
 
             // serialize output transaction
             var txOutBytes = SerializeOutputTransaction(txOut);

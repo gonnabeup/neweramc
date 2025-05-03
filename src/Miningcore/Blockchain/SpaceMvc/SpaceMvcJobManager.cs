@@ -33,7 +33,7 @@ public class SpaceMvcJobManager : BitcoinJobManagerBase<SpaceMvcJob>
     {
         base.PostChainIdentifyConfigure();
 
-        if(poolConfig.EnableInternalStratum == true && coin.HeaderHasherValue is IHashAlgorithmInit hashInit)
+        if(poolConfig.EnableInternalStratum == true && poolConfig.Template.As<BitcoinTemplate>().HeaderHasherValue is IHashAlgorithmInit hashInit)
         {
             if(!hashInit.DigestInit(poolConfig))
                 logger.Error(()=> $"{hashInit.GetType().Name} initialization failed");
