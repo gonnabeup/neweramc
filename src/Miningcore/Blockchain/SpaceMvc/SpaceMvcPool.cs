@@ -1,3 +1,10 @@
+using Miningcore.Blockchain.Bitcoin;
+using Miningcore.Blockchain.Bitcoin.Stratum;
+using Miningcore.Blockchain.Bitcoin.Configuration;
+using Miningcore.Blockchain.Bitcoin.DaemonResponses;
+using Miningcore.Extensions;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 using System.Globalization;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -6,7 +13,6 @@ using Autofac;
 using AutoMapper;
 using Microsoft.IO;
 using Miningcore.Configuration;
-using Miningcore.Extensions;
 using Miningcore.JsonRpc;
 using Miningcore.Messaging;
 using Miningcore.Mining;
@@ -16,15 +22,13 @@ using Miningcore.Persistence;
 using Miningcore.Persistence.Repositories;
 using Miningcore.Stratum;
 using Miningcore.Time;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using NLog;
 using static Miningcore.Util.ActionUtils;
 
 namespace Miningcore.Blockchain.SpaceMvc;
 
 [CoinFamily(CoinFamily.Bitcoin)]
-public class SpaceMvcPool : PoolBase
+public class SpaceMvcPool : BitcoinPool
 {
     public SpaceMvcPool(IComponentContext ctx,
         JsonSerializerSettings serializerSettings,

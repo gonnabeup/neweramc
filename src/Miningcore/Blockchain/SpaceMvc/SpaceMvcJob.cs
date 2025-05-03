@@ -1,18 +1,20 @@
+using Miningcore.Blockchain.Bitcoin;
+using Miningcore.Blockchain.Bitcoin.Stratum;
+using Miningcore.Blockchain.Bitcoin.Configuration;
+using Miningcore.Blockchain.Bitcoin.DaemonResponses;
+using Miningcore.Extensions;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 using System.Collections.Concurrent;
 using System.Globalization;
 using System.Text;
-using Miningcore.Blockchain.Bitcoin;
-using Miningcore.Blockchain.Bitcoin.Configuration;
-using Miningcore.Blockchain.Bitcoin.DaemonResponses;
 using Miningcore.Configuration;
 using Miningcore.Crypto;
-using Miningcore.Extensions;
 using Miningcore.Stratum;
 using Miningcore.Time;
 using Miningcore.Util;
 using NBitcoin;
 using NBitcoin.DataEncoders;
-using Newtonsoft.Json.Linq;
 using Contract = Miningcore.Contracts.Contract;
 using Transaction = NBitcoin.Transaction;
 

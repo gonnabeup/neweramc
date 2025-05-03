@@ -1,5 +1,10 @@
 using Miningcore.Blockchain.Bitcoin;
+using Miningcore.Blockchain.Bitcoin.Stratum;
 using Miningcore.Blockchain.Bitcoin.Configuration;
+using Miningcore.Blockchain.Bitcoin.DaemonResponses;
+using Miningcore.Extensions;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 using Miningcore.Blockchain.SpaceMvc.Configuration;
 using Miningcore.Configuration;
 using Miningcore.Contracts;
@@ -8,7 +13,6 @@ using Miningcore.Mining;
 using Miningcore.Time;
 using Miningcore.Util;
 using NBitcoin;
-using Newtonsoft.Json.Linq;
 using Autofac;
 using static Miningcore.Util.ActionUtils;
 

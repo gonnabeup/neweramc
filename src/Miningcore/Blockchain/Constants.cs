@@ -1,3 +1,4 @@
+
 namespace Miningcore.Blockchain;
 
 public static class JobRefreshBy
