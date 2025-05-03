@@ -1,4 +1,5 @@
 using Autofac;
+using Miningcore.Blockchain;
 using Miningcore.Blockchain.Bitcoin;
 using Miningcore.Mining;
 using Miningcore.Payments;

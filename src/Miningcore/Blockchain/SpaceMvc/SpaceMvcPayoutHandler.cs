@@ -348,7 +348,7 @@ public class SpaceMvcPayoutHandler : BitcoinPayoutHandler
         }
     }
 
-    public override double AdjustBlockEffort(double effort)
+    public new double AdjustBlockEffort(double effort)
     {
         return effort;
     }
