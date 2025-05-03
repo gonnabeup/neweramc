@@ -1,13 +1,17 @@
 using Miningcore.Blockchain.Bitcoin;
+using Miningcore.Blockchain.Bitcoin.DaemonResponses;
 using Miningcore.Blockchain.SpaceMvc.Configuration;
 using Miningcore.Configuration;
 using Miningcore.Contracts;
 using Miningcore.Crypto;
+using Miningcore.JsonRpc;
 using Miningcore.Messaging;
 using Miningcore.Mining;
+using Miningcore.Notifications.Messages;
 using Miningcore.Time;
 using Miningcore.Util;
 using NBitcoin;
+using Newtonsoft.Json;
 using Autofac;
 using static Miningcore.Util.ActionUtils;
 
@@ -24,6 +28,9 @@ public class SpaceMvcJobManager : BitcoinJobManagerBase<SpaceMvcJob>
     {
     }
 
+    private SpaceMvcTemplate coin;
+    protected double ShareMultiplier = 1;
+
     private SpaceMvcJob CreateJob()
     {
         return new();
@@ -38,6 +45,20 @@ public class SpaceMvcJobManager : BitcoinJobManagerBase<SpaceMvcJob>
             if(!hashInit.DigestInit(poolConfig))
                 logger.Error(()=> $"{hashInit.GetType().Name} initialization failed");
         }
+    }
+
+    protected async Task<RpcResponse<BlockTemplate>> GetBlockTemplateAsync(CancellationToken ct)
+    {
+        var result = await rpc.ExecuteAsync<BlockTemplate>(logger,
+            BitcoinCommands.GetBlockTemplate, ct, extraPoolConfig?.GBTArgs ?? (object) GetBlockTemplateParams());
+
+        return result;
+    }
+
+    protected RpcResponse<BlockTemplate> GetBlockTemplateFromJson(string json)
+    {
+        var result = JsonConvert.DeserializeObject<JsonRpcResponse>(json);
+        return new RpcResponse<BlockTemplate>(result.ResultAs<BlockTemplate>());
     }
 
     protected override async Task<(bool IsNew, bool Force)> UpdateJob(CancellationToken ct, bool forceUpdate, string via = null, string json = null)
@@ -66,7 +87,7 @@ public class SpaceMvcJobManager : BitcoinJobManagerBase<SpaceMvcJob>
                         blockTemplate.Height > job.BlockTemplate?.Height));
 
             if(isNew)
-                messageBus.SendMessage(new ChainHeightNotification(poolConfig.Id, blockTemplate.Height, poolConfig.Template));
+                messageBus.SendMessage(new BlockTemplateNotification(poolConfig.Id, blockTemplate.Height, poolConfig.Template));
 
             if(isNew || forceUpdate)
             {
@@ -138,6 +159,7 @@ public class SpaceMvcJobManager : BitcoinJobManagerBase<SpaceMvcJob>
 
     public override void Configure(PoolConfig pc, ClusterConfig cc)
     {
+        coin = pc.Template.As<SpaceMvcTemplate>();
         base.Configure(pc, cc);
     }
 } 
