@@ -1,10 +1,6 @@
 using Miningcore.Blockchain.Bitcoin;
-using Miningcore.Blockchain.Bitcoin.Stratum;
-using Miningcore.Blockchain.Bitcoin.Configuration;
-using Miningcore.Blockchain.Bitcoin.DaemonResponses;
 using Miningcore.Configuration;
 using Newtonsoft.Json.Linq;
-using Miningcore.Blockchain.Bitcoin;
 
 namespace Miningcore.Blockchain.SpaceMvc.Configuration;
 

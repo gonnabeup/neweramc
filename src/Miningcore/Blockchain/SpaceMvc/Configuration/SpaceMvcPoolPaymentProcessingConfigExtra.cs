@@ -1,7 +1,3 @@
-using Miningcore.Blockchain.Bitcoin;
-using Miningcore.Blockchain.Bitcoin.Stratum;
-using Miningcore.Blockchain.Bitcoin.Configuration;
-using Miningcore.Blockchain.Bitcoin.DaemonResponses;
 namespace Miningcore.Blockchain.SpaceMvc.Configuration;
 
 public class SpaceMvcPoolPaymentProcessingConfigExtra
