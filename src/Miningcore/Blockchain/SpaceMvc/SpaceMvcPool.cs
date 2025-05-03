@@ -17,6 +17,7 @@ using Miningcore.Persistence.Repositories;
 using Miningcore.Stratum;
 using Miningcore.Time;
 using NLog;
+using Newtonsoft.Json;
 using static Miningcore.Util.ActionUtils;
 
 namespace Miningcore.Blockchain.SpaceMvc;
