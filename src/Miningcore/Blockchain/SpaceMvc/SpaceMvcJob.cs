@@ -62,6 +62,6 @@ public class SpaceMvcJob : BitcoinJob
 
         // build merkle root
         merkleBranchesHex = Array.Empty<string>();
-        mt = new MerkleTree(merkleBranchesHex);
+        mt = new MerkleTree(merkleBranchesHex.Select(x => Encoders.Hex.DecodeData(x)).ToArray());
     }
 } 

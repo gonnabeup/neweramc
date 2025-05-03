@@ -44,11 +44,80 @@ public class SpaceMvcJobManager : BitcoinJobManagerBase<SpaceMvcJob>
     {
         try
         {
-            return await base.UpdateJob(ct, forceUpdate, via, json);
+            if(forceUpdate)
+                lastJobRebroadcast = clock.Now;
+
+            var response = string.IsNullOrEmpty(json) ?
+                await GetBlockTemplateAsync(ct) :
+                GetBlockTemplateFromJson(json);
+
+            if(response.Error != null)
+            {
+                logger.Warn(() => $"Unable to update job. Daemon responded with: {response.Error.Message} Code {response.Error.Code}");
+                return (false, forceUpdate);
+            }
+
+            var blockTemplate = response.Response;
+            var job = currentJob;
+
+            var isNew = job == null ||
+                (blockTemplate != null &&
+                    (job.BlockTemplate?.PreviousBlockhash != blockTemplate.PreviousBlockhash ||
+                        blockTemplate.Height > job.BlockTemplate?.Height));
+
+            if(isNew)
+                messageBus.NotifyChainHeight(poolConfig.Id, blockTemplate.Height, poolConfig.Template);
+
+            if(isNew || forceUpdate)
+            {
+                job = CreateJob();
+
+                job.Init(blockTemplate, NextJobId(),
+                    poolConfig, extraPoolConfig, clusterConfig, clock, poolAddressDestination, network, isPoS,
+                    ShareMultiplier, poolConfig.Template.As<BitcoinTemplate>().CoinbaseHasherValue, 
+                    poolConfig.Template.As<BitcoinTemplate>().HeaderHasherValue,
+                    !isPoS ? poolConfig.Template.As<BitcoinTemplate>().BlockHasherValue : 
+                    poolConfig.Template.As<BitcoinTemplate>().PoSBlockHasherValue ?? poolConfig.Template.As<BitcoinTemplate>().BlockHasherValue);
+
+                lock(jobLock)
+                {
+                    validJobs.Insert(0, job);
+
+                    while(validJobs.Count > maxActiveJobs)
+                        validJobs.RemoveAt(validJobs.Count - 1);
+                }
+
+                if(isNew)
+                {
+                    if(via != null)
+                        logger.Info(() => $"Detected new block {blockTemplate.Height} [{via}]");
+                    else
+                        logger.Info(() => $"Detected new block {blockTemplate.Height}");
+
+                    BlockchainStats.LastNetworkBlockTime = clock.Now;
+                    BlockchainStats.BlockHeight = blockTemplate.Height;
+                    BlockchainStats.NetworkDifficulty = job.Difficulty;
+                    BlockchainStats.NextNetworkTarget = blockTemplate.Target;
+                    BlockchainStats.NextNetworkBits = blockTemplate.Bits;
+                }
+
+                else
+                {
+                    if(via != null)
+                        logger.Debug(() => $"Template update {blockTemplate?.Height} [{via}]");
+                    else
+                        logger.Debug(() => $"Template update {blockTemplate?.Height}");
+                }
+
+                currentJob = job;
+            }
+
+            return (isNew, forceUpdate);
         }
+
         catch(Exception ex)
         {
-            logger.Error(() => $"Error in UpdateJob: {ex.Message}");
+            logger.Error(() => $"Error during {nameof(UpdateJob)}: {ex.Message}");
             throw;
         }
     }
@@ -57,7 +126,8 @@ public class SpaceMvcJobManager : BitcoinJobManagerBase<SpaceMvcJob>
     {
         try
         {
-            return base.GetJobParamsForStratum(isNew);
+            var job = currentJob;
+            return job?.GetJobParams(isNew);
         }
         catch(Exception ex)
         {

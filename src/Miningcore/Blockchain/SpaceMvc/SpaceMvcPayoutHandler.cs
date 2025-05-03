@@ -26,6 +26,12 @@ namespace Miningcore.Blockchain.SpaceMvc;
 [CoinFamily(CoinFamily.Bitcoin)]
 public class SpaceMvcPayoutHandler : BitcoinPayoutHandler
 {
+    private class BlockInfo
+    {
+        public int Confirmations { get; set; }
+        public int Height { get; set; }
+    }
+
     public SpaceMvcPayoutHandler(
         IComponentContext ctx,
         IConnectionFactory cf,
@@ -333,9 +339,9 @@ public class SpaceMvcPayoutHandler : BitcoinPayoutHandler
 
     #endregion // IPayoutHandler
 
-    private async Task<Block[]> GetBlockInfoAsync(CancellationToken ct, Block[] blocks)
+    private async Task<BlockInfo[]> GetBlockInfoAsync(CancellationToken ct, Block[] blocks)
     {
-        var blockInfos = new Block[blocks.Length];
+        var blockInfos = new BlockInfo[blocks.Length];
 
         for(var i = 0; i < blocks.Length; i++)
         {
@@ -349,10 +355,10 @@ public class SpaceMvcPayoutHandler : BitcoinPayoutHandler
             }
 
             var blockInfo = result.Response;
-            blockInfos[i] = new Block
+            blockInfos[i] = new BlockInfo
             {
-                BlockHeight = blockInfo["height"]?.Value<ulong>() ?? 0,
-                ConfirmationProgress = blockInfo["confirmations"]?.Value<int>() ?? 0
+                Height = blockInfo["height"]?.Value<int>() ?? 0,
+                Confirmations = blockInfo["confirmations"]?.Value<int>() ?? 0
             };
         }
 
