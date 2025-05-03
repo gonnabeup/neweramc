@@ -334,11 +334,11 @@ public class SpaceMvcPayoutHandler : PayoutHandlerBase,
 
     #endregion // IPayoutHandler
 
-    private async Task<BlockInfo[]> GetBlockInfoAsync(CancellationToken ct, Block[] blocks)
+    private async Task<DaemonResponses.Block[]> GetBlockInfoAsync(CancellationToken ct, Block[] blocks)
     {
         var pageSize = 100;
         var pageCount = (int) Math.Ceiling(blocks.Length / (double) pageSize);
-        var result = new List<BlockInfo>();
+        var result = new List<DaemonResponses.Block>();
 
         for(var i = 0; i < pageCount; i++)
         {
@@ -364,20 +364,20 @@ public class SpaceMvcPayoutHandler : PayoutHandlerBase,
 
                 if(result.Error == null)
                 {
-                    var blockInfo = result.Response.ToObject<BlockInfo>();
+                    var blockInfo = result.Response.ToObject<DaemonResponses.Block>();
 
                     // coinbase transaction ids might be in the following format:
                     // "b4a216ed0d4e959510dfa676434e8f6ce8e0af4b7b7d9b52b1e713d7ba665d19-0"
                     // we need to strip the index
-                    if(blockInfo?.Tx?.Length > 0)
+                    if(blockInfo?.Transactions?.Length > 0)
                     {
-                        var txId = blockInfo.Tx[0];
+                        var txId = blockInfo.Transactions[0];
                         var dashIndex = txId.IndexOf('-');
 
                         if(dashIndex != -1)
                             txId = txId.Substring(0, dashIndex);
 
-                        blockInfo.Tx[0] = txId;
+                        blockInfo.Transactions[0] = txId;
                     }
 
                     result.Add(blockInfo);
