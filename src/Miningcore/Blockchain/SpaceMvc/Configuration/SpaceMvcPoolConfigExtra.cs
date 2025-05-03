@@ -1,5 +1,6 @@
 using Miningcore.Configuration;
 using Newtonsoft.Json.Linq;
+using Miningcore.Blockchain.Bitcoin;
 
 namespace Miningcore.Blockchain.SpaceMvc.Configuration;
 

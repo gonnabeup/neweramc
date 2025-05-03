@@ -9,6 +9,7 @@ using Miningcore.Time;
 using Miningcore.Util;
 using NBitcoin;
 using Newtonsoft.Json.Linq;
+using Autofac;
 using static Miningcore.Util.ActionUtils;
 
 namespace Miningcore.Blockchain.SpaceMvc;
